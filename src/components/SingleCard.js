@@ -1,13 +1,14 @@
 import React from 'react'
 import './SingleCard.css'
-export const SingleCard = ({card,handleChoice }) => {
+export const SingleCard = ({card,handleChoice, flipped,disabled }) => {
     const handleclick =()=>{
-            handleChoice(card)
+      if(!disabled){
+            handleChoice(card)}
     }
   return (
     <div className='card'  > 
         
-    <div>
+    <div className={flipped ? "flipped" : ""} >
       <img  className="front" src={card.src} alt="front card"  />
 
       <img onClick={handleclick}  className="back" src="/img/cover.png"  alt='back card'  />

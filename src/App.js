@@ -17,8 +17,11 @@ const  [cards,setCards] = useState([])
 const [turns,setTurns] = useState(0)
 const [choiceOne,setChoiceOne] = useState(null)
 const [choiceTwo,setChoiceTwo] = useState(null)
+const [disable,setdisable] = useState(false)
 useEffect(()=>{
+
 if(choiceOne && choiceTwo){
+  setdisable(true)
   if(choiceOne.src === choiceTwo.src){
     console.log("hh");
     setCards(prevCard => {
@@ -32,7 +35,9 @@ if(choiceOne && choiceTwo){
 resetTurn()  } else{
   console.log("gg");
 
-  resetTurn()
+       setTimeout(() => {
+        resetTurn()
+       }, 1000);
 }
 }
 },[choiceOne,choiceTwo])
@@ -41,6 +46,7 @@ const resetTurn = ()=>{
   setChoiceOne(null)
   setChoiceTwo(null)
   setTurns(prevTurns => prevTurns+1)
+  setdisable(false)
 }
   const shuffleCards = ()=>{
     const shuffledCards = [...cardImages,...cardImages]
@@ -53,6 +59,9 @@ const resetTurn = ()=>{
   const handleChoice = (card)=>{
          choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
   }
+  useEffect(()=>{
+    shuffleCards()
+  },[])
   return (
     <div className="App">
       <h1>Magic Match</h1>
@@ -60,10 +69,14 @@ const resetTurn = ()=>{
       <div className='card-grid'>
 
         {cards.map(card=>(
-          <SingleCard card={card} key={card.id} handleChoice={handleChoice} />
+          <SingleCard card={card} key={card.id} handleChoice={handleChoice}  
+          
+          flipped={card === choiceOne || card === choiceTwo || card.matched }
+          disabled= {disable}
+           />
         ))} 
       </div>
-
+           Turns :  {turns}
     </div>
   );
 }
